@@ -5,6 +5,7 @@ const AESService = require('./aes');
 const UserService = require('./user');
 const PolicyService = require('./policy');
 const FacebookService = require('./facebook');
+const GoogleService = require('./google');
 
 const services = {};
 
@@ -16,7 +17,8 @@ exports.init = (models) => {
   services.AESService = new AESService({ services, models });
   services.UserService = new UserService({ services, models });
   services.PolicyService = new PolicyService({ services, models });
-  services.FacebookService = new FacebookService({ services, models });
+  services.FacebookService = new FacebookService();
+  services.GoogleService = new GoogleService();
 
   return services;
 };

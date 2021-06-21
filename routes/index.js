@@ -8,6 +8,7 @@ const UserController = require('../controllers/user');
 router.post('/auth/login', AuthController.login);
 router.post('/auth/signup', AuthController.signup);
 router.get('/auth/facebook/callback', AuthController.facebookLoginCallback);
+router.get('/auth/google/callback', AuthController.googleLoginCallback);
 
 router.get('/user', checkUserAuth, UserController.getUserInfo);
 

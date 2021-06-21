@@ -77,7 +77,7 @@ module.exports = {
     }
   },
   /**
-   * {post} /api/auth/facebook/callback facebook登入
+   * {get} /api/auth/facebook/callback facebook登入
    *
    * controllers/auth.facebookLoginCallback
    *
@@ -98,6 +98,42 @@ module.exports = {
   async facebookLoginCallback(req, res, next) {
     try {
       const result = await AuthService.facebookLoginCallback(req.query);
+      const data = {
+        success: true,
+        errorCode: 0,
+        message: 'successed',
+        data: result,
+      };
+      debug(data);
+      res.json(data);
+    } catch (error) {
+      console.error(error)
+      next(error);
+    }
+  },
+
+  /**
+   * {get} /api/auth/google/callback google
+   *
+   * controllers/auth.googleLoginCallback
+   *
+   * {json} Success-Response:
+   *     HTTP/1.1 200 OK
+        {
+          "success": true,
+          "errorCode": 0,
+          "message": "successed",
+          "data": {
+            "accessToken": "5b6a9b156dd6ce5086592376",
+            "userName": "test",
+            "userEmail": "test@gamil.com",
+            "lastLogin": "2021-06-11 22:23:47",
+          }
+        }
+   */
+  async googleLoginCallback(req, res, next) {
+    try {
+      const result = await AuthService.googleLoginCallback(req.query);
       const data = {
         success: true,
         errorCode: 0,

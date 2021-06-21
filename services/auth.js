@@ -152,4 +152,51 @@ module.exports = class AuthService {
     }
   }
 
+  async googleLoginCallback({
+    code,
+    redirect_uri,
+    googleAccessToken
+  }) {
+    try {
+      // get googleAccessToken by code
+      if (!googleAccessToken) {
+        const accessToken = await this.services.GoogleService.getAccessTokenByCode({ code, redirect_uri })
+        googleAccessToken = accessToken.access_token
+      }
+      // get googleUserID and profile by googleAccessToken
+      const googleProfile = await this.services.GoogleService.getProfile({ accessToken: googleAccessToken })
+      let user = await this.models.User.findOne({
+        google_user_id: googleProfile.id,
+      }); 
+
+      // create new account if first use google login 
+      if (!user) { 
+        user = await this.models.User.create({
+          name: googleProfile.name,
+          email: googleProfile.email,
+          google_user_id: googleProfile.id,
+          cover_photo_url: googleProfile.picture
+        })
+      }
+
+
+      // update last login time 
+      const modified_time = moment().format('YYYY-MM-DD HH:mm:ss')
+      await this.models.User.updateOne({
+        _id: user._id,
+      }, {
+        modified_time: modified_time,
+      });  
+
+      return {
+        accessToken: this.getToken({ userId: user._id }), // use mongodb id 
+        userName: user.name,
+        userEmail: user.email,
+        lastLogin: modified_time,
+      };
+
+    } catch (error) {
+      throw error;
+    }
+  }
 };
