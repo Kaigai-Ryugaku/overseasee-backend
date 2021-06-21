@@ -45,7 +45,7 @@ module.exports = class AuthService {
       let user = await this.models.User.findOne({
         email: email,
       });
-      let modified_time = moment().format('YYYY-MM-DD HH:mm:ss')
+      const modified_time = moment().format('YYYY-MM-DD HH:mm:ss')
       if (user) {
         console.log(user.password)
         const match = await bcrypt.compare(password, user.password);
@@ -63,7 +63,6 @@ module.exports = class AuthService {
       }
       return {
         accessToken: this.getToken({ userId: user._id }),
-        userId: user._id,
         userName: user.name,
         userEmail: user.email,
         lastLogin: modified_time,
@@ -106,4 +105,51 @@ module.exports = class AuthService {
       throw error;
     }
   }
+
+  async facebookLoginCallback({
+    code,
+    redirect_uri,
+    facebookAccessToken
+  }) {
+    try {
+      // get facebookAccessToken by code
+      if (!facebookAccessToken) {
+        const accessToken = await this.services.FacebookService.getAccessTokenByCode({ code, redirect_uri })
+        facebookAccessToken = accessToken.access_token
+      }
+      // get facebookUserID and profile by facebookAccessToken
+      const facebookProfile = await this.services.FacebookService.getProfile({ accessToken: facebookAccessToken })
+      let user = await this.models.User.findOne({
+        facebook_user_id: facebookProfile.id,
+      }); 
+
+      // create new account if first use facebook login 
+      if (!user) { 
+        user = await this.models.User.create({
+          name: facebookProfile.name,
+          email: facebookProfile.email,
+          facebook_user_id: facebookProfile.id,
+        })
+      }
+
+      // update last login time 
+      const modified_time = moment().format('YYYY-MM-DD HH:mm:ss')
+      await this.models.User.updateOne({
+        _id: user._id,
+      }, {
+        modified_time: modified_time,
+      });  
+
+      return {
+        accessToken: this.getToken({ userId: user._id }), // use mongodb id 
+        userName: user.name,
+        userEmail: user.email,
+        lastLogin: modified_time,
+      };
+
+    } catch (error) {
+      throw error;
+    }
+  }
+
 };

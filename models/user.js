@@ -4,7 +4,8 @@ const mongooseFieldEncryption = require('mongoose-field-encryption').fieldEncryp
 
 module.exports = (mongoose, Schema, services) => {
     const userSchema = new Schema({
-    //   user_id: { type: String, required: true },
+      facebook_user_id: { type: String },
+      google_user_id: { type: String },
       name: { type: String, required: true },
       cover_photo_url: { type: String },
       password: { type: String },

@@ -43,11 +43,11 @@ module.exports = {
   },
   
   /**
-   * @api {post} /api/auth/signup 登入
+   * {post} /api/auth/signup 登入
    *
-   * @apiName controllers/auth.signup
+   * controllers/auth.signup
    *
-   * @apiSuccessExample {json} Success-Response:
+   * {json} Success-Response:
    *     HTTP/1.1 200 OK
         {
           "success": true,
@@ -76,5 +76,39 @@ module.exports = {
       next(error);
     }
   },
-
+  /**
+   * {post} /api/auth/facebook/callback facebook登入
+   *
+   * controllers/auth.facebookLoginCallback
+   *
+   * {json} Success-Response:
+   *     HTTP/1.1 200 OK
+        {
+          "success": true,
+          "errorCode": 0,
+          "message": "successed",
+          "data": {
+            "accessToken": "5b6a9b156dd6ce5086592376",
+            "userName": "test",
+            "userEmail": "test@gamil.com",
+            "lastLogin": "2021-06-11 22:23:47",
+          }
+        }
+   */
+  async facebookLoginCallback(req, res, next) {
+    try {
+      const result = await AuthService.facebookLoginCallback(req.query);
+      const data = {
+        success: true,
+        errorCode: 0,
+        message: 'successed',
+        data: result,
+      };
+      debug(data);
+      res.json(data);
+    } catch (error) {
+      console.error(error)
+      next(error);
+    }
+  },
 };
