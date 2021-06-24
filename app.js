@@ -55,6 +55,5 @@ module.exports = async () => {
     res.send('OK');
   });
 
-
   return { app, mongoose };
 };

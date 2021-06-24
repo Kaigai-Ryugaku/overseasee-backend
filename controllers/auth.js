@@ -27,7 +27,7 @@ module.exports = {
    */
   async login(req, res, next) {
     try {
-        console.log(req.body)
+      console.log(req.body);
       const result = await AuthService.login(req.body);
       const data = {
         success: true,
@@ -41,7 +41,7 @@ module.exports = {
       next(error);
     }
   },
-  
+
   /**
    * {post} /api/auth/signup 登入
    *
@@ -62,7 +62,7 @@ module.exports = {
    */
   async signup(req, res, next) {
     try {
-        console.log(req.body)
+      console.log(req.body);
       const result = await AuthService.signup(req.body);
       const data = {
         success: true,
@@ -107,7 +107,7 @@ module.exports = {
       debug(data);
       res.json(data);
     } catch (error) {
-      console.error(error)
+      console.error(error);
       next(error);
     }
   },
@@ -143,7 +143,7 @@ module.exports = {
       debug(data);
       res.json(data);
     } catch (error) {
-      console.error(error)
+      console.error(error);
       next(error);
     }
   },

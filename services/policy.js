@@ -37,4 +37,4 @@ module.exports = class PoliciesService {
       throw error;
     }
   }
-}
+};

@@ -2,7 +2,6 @@ const {
   UserService,
 } = require('../services').services;
 
-
 module.exports = {
   /**
    * {get} /api/user 取得個人資料
@@ -16,7 +15,6 @@ module.exports = {
           "errorCode": 0,
           "message": "successed",
           "data": {
-            "userId": "5b6a9b156dd6ce5086592376",
             "userName": "test",
             "userEmail" : "xxx@gmail.com"
           }

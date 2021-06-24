@@ -1,12 +1,9 @@
-
-
 module.exports = class UserService {
   constructor({ services, models }) {
     this.services = services;
     this.models = models;
   }
 
-  
   async getUserInfo({
     currentUserId,
   }) {
@@ -16,7 +13,6 @@ module.exports = class UserService {
         _id: currentUserId,
       });
       return {
-        userId: user._id,
         userName: user.name,
         userEmail: user.email,
         lastLogin: user.modified_time,

@@ -9,42 +9,42 @@ module.exports = class FacebookService {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
     });
-    this.client_id = config.get('facebook.appId')
-    this.client_secret = config.get('facebook.appSecret')
+    this.clientId = config.get('facebook.appId');
+    this.clientSecret = config.get('facebook.appSecret');
   }
 
   async getAccessTokenByCode({
     redirect_uri,
-    code
+    code,
   }) {
     try {
       const params = {
-        client_id: this.client_id,
-        redirect_uri: redirect_uri,
-        client_secret: this.client_secret,
-        code: code
-      }
-      const accessToken = await this.facebookApi.get('/oauth/access_token', { params: params })
-      
-      return accessToken.data
+        client_id: this.clientId,
+        redirect_uri,
+        client_secret: this.clientSecret,
+        code,
+      };
+      const accessToken = await this.facebookApi.get('/oauth/access_token', { params });
+
+      return accessToken.data;
     } catch (error) {
       throw error;
     }
   }
+
   async getProfile({
     accessToken,
   }) {
     try {
       const params = {
         access_token: accessToken,
-        fields: config.get('facebook.scope')
-      }
-      const profile = await this.facebookApi.get('/me', { params: params })
+        fields: config.get('facebook.scope'),
+      };
+      const profile = await this.facebookApi.get('/me', { params });
 
-      return profile.data
+      return profile.data;
     } catch (error) {
       throw error;
     }
   }
-
 };
