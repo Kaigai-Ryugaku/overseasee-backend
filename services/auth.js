@@ -3,6 +3,7 @@ const config = require('config');
 const moment = require('moment');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const logger = require('../logger');
 
 const MsgForbidden = require('../utils/MsgForbidden');
 
@@ -19,7 +20,7 @@ module.exports = class AuthService {
       const decoded = jwt.verify(token, secret);
       return decoded;
     } catch (error) {
-      console.error(error);
+      logger.error(error);
       throw error;
     }
   }
@@ -29,7 +30,7 @@ module.exports = class AuthService {
       const secret = config.get('auth.secret');
       return jwt.sign({ userId }, secret, { expiresIn });
     } catch (error) {
-      console.error(error);
+      logger.error(error);
       throw error;
     }
   }
@@ -39,14 +40,13 @@ module.exports = class AuthService {
     password,
   }) {
     try {
-      console.log('login');
+      logger.info('login');
 
       const user = await this.models.User.findOne({
         email,
       });
       const modified_time = moment().format('YYYY-MM-DD HH:mm:ss');
       if (user) {
-        console.log(user.password);
         const match = await bcrypt.compare(password, user.password);
         if (match) {
           await this.models.User.updateOne({
@@ -67,7 +67,6 @@ module.exports = class AuthService {
         lastLogin: modified_time,
       };
     } catch (error) {
-      console.error(error);
       throw error;
     }
   }
@@ -98,7 +97,6 @@ module.exports = class AuthService {
         creatTime: user.created_time,
       };
     } catch (error) {
-      console.error(error);
       throw error;
     }
   }

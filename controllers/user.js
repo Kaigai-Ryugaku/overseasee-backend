@@ -1,6 +1,7 @@
 const {
   UserService,
 } = require('../services').services;
+const logger = require('../logger');
 
 module.exports = {
   /**
@@ -29,7 +30,7 @@ module.exports = {
         message: 'successed',
         data: result,
       };
-      console.log(data);
+      logger.info(data);
       res.json(data);
     } catch (error) {
       next(error);

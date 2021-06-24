@@ -1,3 +1,4 @@
+const logger = require('../logger');
 module.exports = class UserService {
   constructor({ services, models }) {
     this.services = services;
@@ -8,7 +9,7 @@ module.exports = class UserService {
     currentUserId,
   }) {
     try {
-      console.log('getUserInfo');
+      logger.info('getUserInfo');
       const user = await this.models.User.findOne({
         _id: currentUserId,
       });
@@ -18,7 +19,7 @@ module.exports = class UserService {
         lastLogin: user.modified_time,
       };
     } catch (error) {
-      console.error(error);
+      logger.error(error);
       throw error;
     }
   }

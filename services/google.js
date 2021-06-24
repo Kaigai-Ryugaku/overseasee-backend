@@ -32,7 +32,6 @@ module.exports = class GoogleService {
         grant_type: 'authorization_code',
       };
       const accessToken = await this.GoogleOAuthApi.post('/token', new URLSearchParams(params));
-      console.log(accessToken.data);
       return accessToken.data;
     } catch (error) {
       throw error;
@@ -47,7 +46,6 @@ module.exports = class GoogleService {
         access_token: accessToken,
       };
       const profile = await this.GoogleApi.get('/userinfo', { params });
-      console.log(profile.data);
 
       return profile.data;
     } catch (error) {

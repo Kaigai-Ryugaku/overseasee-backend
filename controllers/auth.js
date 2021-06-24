@@ -1,4 +1,4 @@
-const debug = require('debug')('bc:UserController');
+const logger = require('../logger');
 const {
   AuthService,
 } = require('../services').services;
@@ -27,7 +27,6 @@ module.exports = {
    */
   async login(req, res, next) {
     try {
-      console.log(req.body);
       const result = await AuthService.login(req.body);
       const data = {
         success: true,
@@ -35,7 +34,7 @@ module.exports = {
         message: 'successed',
         data: result,
       };
-      console.log(data);
+      logger.info(data);
       res.json(data);
     } catch (error) {
       next(error);
@@ -62,7 +61,6 @@ module.exports = {
    */
   async signup(req, res, next) {
     try {
-      console.log(req.body);
       const result = await AuthService.signup(req.body);
       const data = {
         success: true,
@@ -70,7 +68,7 @@ module.exports = {
         message: 'successed',
         data: result,
       };
-      debug(data);
+      logger.info(data);
       res.json(data);
     } catch (error) {
       next(error);
@@ -104,10 +102,10 @@ module.exports = {
         message: 'successed',
         data: result,
       };
-      debug(data);
+      logger.info(data);
       res.json(data);
     } catch (error) {
-      console.error(error);
+      logger.error(error);
       next(error);
     }
   },
@@ -140,10 +138,10 @@ module.exports = {
         message: 'successed',
         data: result,
       };
-      debug(data);
+      logger.info(data);
       res.json(data);
     } catch (error) {
-      console.error(error);
+      logger.error(error);
       next(error);
     }
   },

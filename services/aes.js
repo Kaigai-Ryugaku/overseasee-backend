@@ -26,7 +26,7 @@ module.exports = class AESService {
       }
       return null;
     } catch (error) {
-      console.error(error);
+      logger.error(error);
       return null;
     }
   }

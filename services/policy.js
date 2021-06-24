@@ -1,4 +1,5 @@
 const debug = require('debug')('bc:PoliciesService');
+const logger = require('../logger');
 const _ = require('lodash');
 const MsgUnauthorized = require('../utils/MsgUnauthorized');
 
@@ -12,7 +13,7 @@ module.exports = class PoliciesService {
     accessToken = '',
   }) {
     try {
-      console.log('checkUserAuth');
+      logger.info('checkUserAuth');
       const splitAuthorization = accessToken.split(' ');
       const token = splitAuthorization[1];
       if (_.isEmpty(token) || token === 'undefined') throw new MsgUnauthorized('請帶入正確 accessToken');
@@ -33,7 +34,7 @@ module.exports = class PoliciesService {
         userModel: user,
       };
     } catch (error) {
-      console.error(error);
+      logger.error(error);
       throw error;
     }
   }
